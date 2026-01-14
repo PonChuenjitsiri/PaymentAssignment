@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
-
-namespace PaymentProcessor.Models;
+﻿namespace PaymentProcessor.Models;
 
 public record TransactionInput(
     string TransactionId,
