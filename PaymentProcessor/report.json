@@ -1,29 +1,31 @@
 {
   "TotalProcessed": 3,
-  "ValidCount": 3,
-  "InvalidCount": 0,
-  "StatusCounts": {
-    "SUCCESS": 2,
-    "PENDING": 1
-  },
-  "Duplicates": [
+  "ValidCount": 0,
+  "InvalidCount": 3,
+  "InvalidRecords": [
     {
-      "Rule": "Rule 1: Duplicate Transaction ID",
-      "TransactionIds": [
-        "TXN-001",
-        "TXN-001"
+      "TransactionId": "TXN-001",
+      "Reason": [
+        "Amount must be Greater 0 (Input: 0)"
       ]
     },
     {
-      "Rule": "Rule 2: Repeated Transaction (Same Merchant/Amount/Day)",
-      "TransactionIds": [
-        "TXN-001",
-        "TXN-001"
+      "TransactionId": "TXN-001",
+      "Reason": [
+        "Currency must be 3 letters (Input: USDsss)"
+      ]
+    },
+    {
+      "TransactionId": "TXN-002",
+      "Reason": [
+        "Invalid Status (Input: )"
       ]
     }
   ],
-  "TotalAmount": 201.00,
-  "AverageAmount": 100.50,
-  "MaxAmount": 100.50,
-  "MinAmount": 100.50
+  "StatusCounts": {},
+  "Duplicates": [],
+  "TotalAmount": 0,
+  "AverageAmount": 0,
+  "MaxAmount": 0,
+  "MinAmount": 0
 }

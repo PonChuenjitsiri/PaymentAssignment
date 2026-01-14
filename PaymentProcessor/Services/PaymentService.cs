@@ -22,7 +22,7 @@ public class PaymentServices
                 errors.Add("MerchantRef is missing");
 
             if (txn.Amount <= 0)
-                errors.Add($"Amount must be > 0 (Input: {txn.Amount})");
+                errors.Add($"Amount must be Greater 0 (Input: {txn.Amount})");
 
             if (string.IsNullOrWhiteSpace(txn.Currency) || txn.Currency.Length != 3)
                 errors.Add($"Currency must be 3 letters (Input: {txn.Currency})");

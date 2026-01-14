@@ -2,7 +2,7 @@
   {
     "transactionId": "TXN-001",
     "merchantRef": "ORD-1001",
-    "amount": 100.50,
+    "amount": 0,
     "currency": "USD",
     "status": "SUCCESS",
     "createdAtUtc": "2023-10-01T10:00:00Z"
@@ -11,7 +11,7 @@
     "transactionId": "TXN-001",
     "merchantRef": "ORD-1001",
     "amount": 100.50,
-    "currency": "USD",
+    "currency": "USDsss",
     "status": "SUCCESS",
     "createdAtUtc": "2023-10-01T10:00:00Z"
   },
@@ -20,7 +20,7 @@
     "merchantRef": "ORD-1002",
     "amount": 500.00,
     "currency": "THB",
-    "status": "PENDING",
+    "status": "",
     "createdAtUtc": "2023-10-01T11:30:00Z"
   }
 ]

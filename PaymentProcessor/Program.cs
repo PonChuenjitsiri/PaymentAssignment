@@ -38,6 +38,7 @@ class Program
         
         var successTransactions = validList
             .Where(t => t.Status?.ToUpper() == "SUCCESS")
+            .DistinctBy(t => t.TransactionId)
             .ToList();
         decimal totalAmount = successTransactions.Sum(t => t.Amount);
         decimal avgAmount = successTransactions.Any() ? successTransactions.Average(t => t.Amount) : 0;
@@ -52,6 +53,7 @@ class Program
             TotalProcessed: allTransactions.Count,
             ValidCount: validList.Count,
             InvalidCount: invalidList.Count,
+            InvalidRecords: invalidList,
             StatusCounts: statusCounts,
             Duplicates: duplicates,
             TotalAmount: totalAmount,
@@ -66,7 +68,7 @@ class Program
 
         Console.WriteLine($"Report saved to: {outputPath}");
         
-        Console.WriteLine($"   - Valid: {validList.Count}, Invalid: {invalidList.Count}");
-        Console.WriteLine($"   - Duplicates Groups: {duplicates.Count}");
+        Console.WriteLine($"    - Valid: {validList.Count}, Invalid: {invalidList.Count}");
+        Console.WriteLine($"    - Duplicates Groups: {duplicates.Count}");
     }
 }
