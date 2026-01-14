@@ -8,6 +8,8 @@ public class PaymentServices
 
     public (List<TransactionInput>, List<InvalidRecord>) ValidTransactions(List<TransactionInput> transactions)
     {
+        if (transactions == null) 
+            return (new List<TransactionInput>(), new List<InvalidRecord>());
         var validTransactions = new List<TransactionInput>();
         var invalidRecords = new List<InvalidRecord>();
 
@@ -47,6 +49,8 @@ public class PaymentServices
 
     public List<DuplicateGroup> DetectDuplicates(List<TransactionInput> validTransactions)
     {
+        if (validTransactions == null || !validTransactions.Any()) 
+            return new List<DuplicateGroup>();
         var results = new List<DuplicateGroup>();
 
         var sameIdGroups = validTransactions
@@ -81,5 +85,36 @@ public class PaymentServices
         }
 
         return results;
+    }
+
+    public PaymentStats CalculateStats(List<TransactionInput> validTransactions)
+    {
+        if (validTransactions == null || !validTransactions.Any()) 
+            return new PaymentStats(0, 0, 0, 0); 
+
+        var successUnique = validTransactions
+            .Where(t => t.Status?.ToUpper() == "SUCCESS")
+            .DistinctBy(t => t.TransactionId) 
+            .ToList();
+
+        if (!successUnique.Any()) 
+            return new PaymentStats(0, 0, 0, 0); 
+
+        return new PaymentStats(
+            TotalAmount: successUnique.Sum(t => t.Amount),
+            AverageAmount: successUnique.Average(t => t.Amount),
+            MaxAmount: successUnique.Max(t => t.Amount),
+            MinAmount: successUnique.Min(t => t.Amount)
+        );
+    }
+
+    public Dictionary<string, int> StatusCount(List<TransactionInput> validTransactions)
+    {
+        if (validTransactions == null || !validTransactions.Any()) 
+            return new Dictionary<string, int>();
+        return validTransactions
+            .GroupBy(t => t.Status?.ToUpper() ?? "UNKNOWN")
+            .ToDictionary(g => g.Key, g => g.Count());
+
     }
 }

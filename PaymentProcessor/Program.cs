@@ -6,8 +6,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        string inputPath = "transactions.json"; 
-        string outputPath = "report.json";      
+        string inputPath = "transactions.json";
+        string outputPath = "report.json";
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -16,58 +16,46 @@ class Program
         }
 
         Console.WriteLine($"Reading from: {inputPath}");
-        
+
+
         if (!File.Exists(inputPath))
         {
             Console.WriteLine("Error Input file not found.");
             return;
         }
 
-        string jsonContent = File.ReadAllText(inputPath);
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        
-        var allTransactions = JsonSerializer.Deserialize<List<TransactionInput>>(jsonContent, options) 
-                              ?? new List<TransactionInput>();
+        var fileService = new FileService();  
+        var paymentService = new PaymentServices();
 
-        var service = new PaymentServices(); 
+        var transactions = fileService.ReadTransactions(inputPath);
 
-        var (validList, invalidList) = service.ValidTransactions(allTransactions);
+        if (transactions.Count == 0) return;
 
-        var duplicates = service.DetectDuplicates(validList);
 
-        
-        var successTransactions = validList
-            .Where(t => t.Status?.ToUpper() == "SUCCESS")
-            .DistinctBy(t => t.TransactionId)
-            .ToList();
-        decimal totalAmount = successTransactions.Sum(t => t.Amount);
-        decimal avgAmount = successTransactions.Any() ? successTransactions.Average(t => t.Amount) : 0;
-        decimal maxAmount = successTransactions.Any() ? successTransactions.Max(t => t.Amount) : 0;
-        decimal minAmount = successTransactions.Any() ? successTransactions.Min(t => t.Amount) : 0;
+        var (validList, invalidList) = paymentService.ValidTransactions(transactions);
+        var duplicates = paymentService.DetectDuplicates(validList);
+        var stats = paymentService.CalculateStats(validList);
 
-        var statusCounts = validList
-            .GroupBy(t => t.Status?.ToUpper() ?? "UNKNOWN")
-            .ToDictionary(g => g.Key, g => g.Count());
+        var statusCounts = paymentService.StatusCount(validList);
 
         var report = new ReportOutput(
-            TotalProcessed: allTransactions.Count,
+            TotalProcessed: transactions.Count,
             ValidCount: validList.Count,
             InvalidCount: invalidList.Count,
             InvalidRecords: invalidList,
             StatusCounts: statusCounts,
             Duplicates: duplicates,
-            TotalAmount: totalAmount,
-            AverageAmount: avgAmount,
-            MaxAmount: maxAmount,
-            MinAmount: minAmount
+            TotalAmount: stats.TotalAmount,
+            AverageAmount: stats.AverageAmount,
+            MaxAmount: stats.MaxAmount,
+            MinAmount: stats.MinAmount
         );
 
-        
-        var outputJson = JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(outputPath, outputJson);
+
+        fileService.SaveReport(outputPath, report);
 
         Console.WriteLine($"Report saved to: {outputPath}");
-        
+
         Console.WriteLine($"    - Valid: {validList.Count}, Invalid: {invalidList.Count}");
         Console.WriteLine($"    - Duplicates Groups: {duplicates.Count}");
     }

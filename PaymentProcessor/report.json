@@ -1,31 +1,22 @@
 {
   "TotalProcessed": 3,
-  "ValidCount": 0,
-  "InvalidCount": 3,
-  "InvalidRecords": [
+  "ValidCount": 3,
+  "InvalidCount": 0,
+  "InvalidRecords": [],
+  "StatusCounts": {
+    "SUCCESS": 3
+  },
+  "Duplicates": [
     {
-      "TransactionId": "TXN-001",
-      "Reason": [
-        "Amount must be Greater 0 (Input: 0)"
-      ]
-    },
-    {
-      "TransactionId": "TXN-001",
-      "Reason": [
-        "Currency must be 3 letters (Input: USDsss)"
-      ]
-    },
-    {
-      "TransactionId": "TXN-002",
-      "Reason": [
-        "Invalid Status (Input: )"
+      "Rule": "Rule 1: Duplicate Transaction ID",
+      "TransactionIds": [
+        "TXN-001",
+        "TXN-001"
       ]
     }
   ],
-  "StatusCounts": {},
-  "Duplicates": [],
-  "TotalAmount": 0,
-  "AverageAmount": 0,
-  "MaxAmount": 0,
-  "MinAmount": 0
+  "TotalAmount": 510.00,
+  "AverageAmount": 255.00,
+  "MaxAmount": 500.00,
+  "MinAmount": 10
 }
