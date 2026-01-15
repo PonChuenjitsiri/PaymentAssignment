@@ -113,7 +113,7 @@ public class PaymentServices
         if (validTransactions == null || !validTransactions.Any()) 
             return new Dictionary<string, int>();
         return validTransactions
-            .GroupBy(t => t.Status?.ToUpper() ?? "UNKNOWN")
+            .GroupBy(t => t.Status?.ToUpper() ?? "")
             .ToDictionary(g => g.Key, g => g.Count());
 
     }

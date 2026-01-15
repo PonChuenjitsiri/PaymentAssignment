@@ -21,6 +21,7 @@
     "amount": 500.00,
     "currency": "THB",
     "status": "SUCCESS",
-    "createdAtUtc": "2023-10-01T11:30:00Z"
+    "createdAtUtc": "2023-10-01T11:30:00Z",
+    "asd": "extraField"
   }
 ]
